@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PFMO Requester Portal</title>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f5f7;
+        color: #333;
+    }
+
+    .header {
+        background: #7b1113;
+        color: white;
+        padding: 20px 40px;
+    }
+
+    .header h1 {
+        margin: 0;
+        font-size: 25px;
+    }
+
+    .header p {
+        margin: 5px 0 0;
+    }
+
+    .container {
+        width: 95%;
+        max-width: 1000px;
+        margin: 30px auto;
+    }
+
+    .card {
+        background: white;
+        padding: 25px;
+        margin-bottom: 25px;
+        border-radius: 8px;
+        box-shadow: 0 2px 7px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+        color: #7b1113;
+        margin-top: 0;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-top: 15px;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin-top: 6px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    textarea {
+        height: 100px;
+        resize: vertical;
+    }
+
+    .submit-btn {
+        background: #7b1113;
+        color: white;
+        border: none;
+        padding: 12px 22px;
+        margin-top: 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 15px;
+    }
+
+    .submit-btn:hover {
+        background: #5f0d0f;
+    }
+
+    .success {
+        display: none;
+        background: #d1e7dd;
+        color: #0f5132;
+        padding: 15px;
+        border-radius: 6px;
+        margin-top: 20px;
+    }
+
+    .tracking-box {
+        display: flex;
+        gap: 10px;
+    }
+
+    .tracking-box input {
+        flex: 1;
+    }
+
+    .track-btn {
+        background: #7b1113;
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .result {
+        display: none;
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #ddd;
+    }
+
+    .detail {
+        margin: 12px 0;
+    }
+
+    .detail strong {
+        display: inline-block;
+        width: 180px;
+    }
+
+    /* STATUS */
+
+    .status {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-size: 13px;
+        font-weight: bold;
+        background: #fff3cd;
+    }
+
+    /* PRIORITY */
+
+    .priority {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    .priority-low {
+        background: #d1e7dd;
+        color: #155724;
+    }
+
+    .priority-moderate {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .priority-high {
+        background: #ffe5b4;
+        color: #8a4b00;
+    }
+
+    .priority-critical {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    /* REQUESTER ASSESSMENT */
+
+    .requester-assessment {
+        background: #f8f9fa;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+
+    .requester-assessment h3 {
+        color: #7b1113;
+        margin-top: 0;
+    }
+
+    .assessment-intro {
+        font-size: 13px;
+        color: #666;
+        line-height: 1.5;
+    }
+
+    .assessment-question {
+        margin-top: 18px;
+    }
+
+    .assessment-question label {
+        margin-top: 0;
+    }
+
+    .assessment-question select {
+        margin-top: 7px;
+    }
+
+    .assessment-note {
+        font-size: 13px;
+        color: #666;
+        margin-top: 15px;
+        line-height: 1.5;
+    }
+
+    /* ASSESSMENT RESULT */
+
+    .assessment-box {
+        background: #f8f9fa;
+        padding: 18px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        margin-top: 20px;
+    }
+
+    .assessment-box h3 {
+        color: #7b1113;
+        margin-top: 0;
+    }
+
+    .preliminary-label {
+        display: inline-block;
+        background: #e2e3e5;
+        color: #41464b;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    /* TIMELINE */
+
+    .timeline {
+        margin-top: 25px;
+        border-left: 3px solid #7b1113;
+        padding-left: 20px;
+    }
+
+    .timeline-item {
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .timeline-item::before {
+        content: "";
+        width: 12px;
+        height: 12px;
+        background: #7b1113;
+        border-radius: 50%;
+        position: absolute;
+        left: -27px;
+        top: 3px;
+    }
+
+    .timeline-item.active {
+        font-weight: bold;
+    }
+
+    .timeline-item.inactive {
+        color: #aaa;
+    }
+
+    .no-result {
+        display: none;
+        background: #f8d7da;
+        color: #721c24;
+        padding: 12px;
+        border-radius: 5px;
+        margin-top: 15px;
+    }
+
+    @media(max-width: 600px) {
+
+        .container {
+            width: 92%;
+        }
+
+        .tracking-box {
+            flex-direction: column;
+        }
+
+        .detail strong {
+            display: block;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+    }
+
+</style>
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<div class="header">
+
+<h1>Batangas State University</h1>
+
+<p>
+    Project and Facility Management Office
+    — Maintenance Request Portal
+</p>
+
+</div>
+
+<div class="container">
+
+<!-- SUBMIT REQUEST -->
+
+<div class="card">
+
+    <h2>Submit Maintenance Request</h2>
+
+    <form id="requestForm">
+
+        <label>Requester Name</label>
+
+        <input
+            type="text"
+            id="requesterName"
+            required>
+
+        <label>Employee / Student ID</label>
+
+        <input
+            type="text"
+            id="requesterId"
+            required>
+
+        <label>Office / Unit</label>
+
+        <input
+            type="text"
+            id="officeUnit"
+            required>
+
+        <label>Contact Number</label>
+
+        <input
+            type="text"
+            id="contactNumber"
+            required>
+
+        <label>Building</label>
+
+        <input
+            type="text"
+            id="building"
+            required>
+
+        <label>Specific Location</label>
+
+        <input
+            type="text"
+            id="location"
+            required>
+
+        <label>Maintenance Category</label>
+
+        <select
+            id="category"
+            required>
+
+            <option value="">
+                Select Category
+            </option>
+
+            <option>Electrical</option>
+            <option>Plumbing</option>
+            <option>Air Conditioning</option>
+            <option>Carpentry</option>
+            <option>Civil Works</option>
+            <option>General Maintenance</option>
+
+        </select>
+
+        <label>Requested Date</label>
+
+        <input
+            type="date"
+            id="requestedDate"
+            required>
+
+        <label>Description of Maintenance Request</label>
+
+        <textarea
+            id="description"
+            placeholder="Describe the problem..."
+            required>
+        </textarea>
+
+
+        <!-- REQUESTER INITIAL CONDITION ASSESSMENT -->
+
+        <div class="requester-assessment">
+
+            <h3>Initial Condition Assessment</h3>
+
+            <p class="assessment-intro">
+                Please provide information about the current condition
+                of the reported problem. The system will automatically
+                determine the preliminary severity, urgency, and priority
+                based on the information provided.
+            </p>
+
+
+            <!-- QUESTION 1 -->
+
+            <div class="assessment-question">
+
+                <label>
+                    1. What is the current condition of the facility or equipment?
+                </label>
+
+                <select id="conditionLevel" required>
+
+                    <option value="">
+                        Select Answer
+                    </option>
+
+                    <option value="1">
+                        Minor defect or inconvenience; facility/equipment
+                        can still be used normally
+                    </option>
+
+                    <option value="2">
+                        Partially affected; use is still possible
+                        but with some difficulty
+                    </option>
+
+                    <option value="3">
+                        Seriously affected; normal use or operation
+                        is significantly disrupted
+                    </option>
+
+                    <option value="4">
+                        Unsafe condition or facility/equipment
+                        cannot be safely used
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- QUESTION 2 -->
+
+            <div class="assessment-question">
+
+                <label>
+                    2. What is the effect of the problem on your office/activity?
+                </label>
+
+                <select id="operationalEffect" required>
+
+                    <option value="">
+                        Select Answer
+                    </option>
+
+                    <option value="1">
+                        No significant effect on operations
+                    </option>
+
+                    <option value="2">
+                        Affects some activities but operations can continue
+                    </option>
+
+                    <option value="3">
+                        Significantly affects office, laboratory, classroom,
+                        or other activities
+                    </option>
+
+                    <option value="4">
+                        Prevents normal operations or affects a critical activity
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- QUESTION 3 -->
+
+            <div class="assessment-question">
+
+                <label>
+                    3. Does the problem pose a safety risk?
+                </label>
+
+                <select id="safetyRisk" required>
+
+                    <option value="">
+                        Select Answer
+                    </option>
+
+                    <option value="1">
+                        No safety risk
+                    </option>
+
+                    <option value="2">
+                        Possible or minor safety concern
+                    </option>
+
+                    <option value="3">
+                        Clear safety concern
+                    </option>
+
+                    <option value="4">
+                        Immediate danger to people, property, or equipment
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- QUESTION 4 -->
+
+            <div class="assessment-question">
+
+                <label>
+                    4. How quickly does the problem need to be addressed?
+                </label>
+
+                <select id="responseTime" required>
+
+                    <option value="">
+                        Select Answer
+                    </option>
+
+                    <option value="1">
+                        Can be handled during regular maintenance scheduling
+                    </option>
+
+                    <option value="2">
+                        Should be addressed within several days
+                    </option>
+
+                    <option value="3">
+                        Should be addressed within 24 hours
+                    </option>
+
+                    <option value="4">
+                        Requires immediate attention
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <p class="assessment-note">
+                <strong>Note:</strong>
+                The requester does not determine the severity, urgency,
+                or priority level. These classifications are automatically
+                generated by the system based on the responses provided.
+                The preliminary assessment may be reviewed and adjusted
+                by PFMO personnel after inspection.
+            </p>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="submit-btn">
+
+            Submit Maintenance Request
+
+        </button>
+
+    </form>
+
+
+    <div
+        class="success"
+        id="successMessage">
+
+        <strong>✓ Request Successfully Submitted!</strong>
+
+        <br><br>
+
+        Your Work Order Number is:
+
+        <strong id="generatedWO"></strong>
+
+        <br><br>
+
+        Please save this number so you can track your request.
+
+    </div>
+
+</div>
+
+
+<!-- TRACK WORK ORDER -->
+
+<div class="card">
+
+    <h2>Track Your Work Order</h2>
+
+    <p>
+        Enter your Work Order Number to view the
+        current status and preliminary assessment.
+    </p>
+
+    <div class="tracking-box">
+
+        <input
+            type="text"
+            id="trackingNumber"
+            placeholder="Example: WO-2026-0001">
+
+        <button
+            class="track-btn"
+            onclick="trackWorkOrder()">
+
+            Track
+
+        </button>
+
+    </div>
+
+    <div
+        class="no-result"
+        id="noResult">
+
+        Work Order not found.
+        Please check the Work Order Number.
+
+    </div>
+
+
+    <!-- RESULT -->
+
+    <div
+        class="result"
+        id="trackingResult">
+
+        <h3>
+            Work Order Information
+        </h3>
+
+        <div class="detail">
+
+            <strong>Work Order No.:</strong>
+
+            <span id="trackWO"></span>
+
+        </div>
+
+        <div class="detail">
+
+            <strong>Requester:</strong>
+
+            <span id="trackRequester"></span>
+
+        </div>
+
+        <div class="detail">
+
+            <strong>Office / Unit:</strong>
+
+            <span id="trackOffice"></span>
+
+        </div>
+
+        <div class="detail">
+
+            <strong>Building:</strong>
+
+            <span id="trackBuilding"></span>
+
+        </div>
+
+        <div class="detail">
+
+            <strong>Location:</strong>
+
+            <span id="trackLocation"></span>
+
+        </div>
+
+        <div class="detail">
+
+            <strong>Category:</strong>
+
+            <span id="trackCategory"></span>
+
+        </div>
+
+        <div class="detail">
+
+            <strong>Date Requested:</strong>
+
+            <span id="trackDate"></span>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="detail">
+
+            <strong>Current Status:</strong>
+
+            <span
+                class="status"
+                id="trackStatus">
+            </span>
+
+        </div>
+
+
+        <!-- SYSTEM ASSESSMENT -->
+
+        <div class="assessment-box">
+
+            <h3>System Preliminary Assessment</h3>
+
+            <span class="preliminary-label">
+                SYSTEM-GENERATED
+            </span>
+
+            <div class="detail">
+
+                <strong>Severity:</strong>
+
+                <span id="trackSeverity">
+                    Not Yet Assessed
+                </span>
+
+            </div>
+
+            <div class="detail">
+
+                <strong>Urgency:</strong>
+
+                <span id="trackUrgency">
+                    Not Yet Assessed
+                </span>
+
+            </div>
+
+            <div class="detail">
+
+                <strong>Priority Level:</strong>
+
+                <span
+                    id="trackPriority"
+                    class="priority">
+
+                    Not Yet Assessed
+
+                </span>
+
+            </div>
+
+            <p class="assessment-note">
+
+                The preliminary severity, urgency, and priority are
+                automatically generated using predefined assessment
+                rules. PFMO personnel will verify the actual condition
+                during the inspection stage and may adjust the assessment
+                when necessary.
+
+            </p>
+
+        </div>
+
+
+        <!-- ASSIGNED PERSONNEL -->
+
+        <div class="detail">
+
+            <strong>Assigned Personnel:</strong>
+
+            <span id="trackPersonnel">
+                Not Yet Assigned
+            </span>
+
+        </div>
+
+
+        <!-- REMARKS -->
+
+        <div class="detail">
+
+            <strong>PFMO Remarks:</strong>
+
+            <p id="trackRemarks">
+                No remarks yet.
+            </p>
+
+        </div>
+
+
+        <!-- TIMELINE -->
+
+        <h3>
+            Work Order Progress
+        </h3>
+
+        <div class="timeline">
+
+            <div
+                class="timeline-item"
+                id="stepSubmitted">
+
+                Submitted
+
+            </div>
+
+            <div
+                class="timeline-item inactive"
+                id="stepInspection">
+
+                For Inspection
+
+            </div>
+
+            <div
+                class="timeline-item inactive"
+                id="stepAssigned">
+
+                Assigned
+
+            </div>
+
+            <div
+                class="timeline-item inactive"
+                id="stepProgress">
+
+                In Progress
+
+            </div>
+
+            <div
+                class="timeline-item inactive"
+                id="stepCompleted">
+
+                Completed
+
+            </div>
+
+            <div
+                class="timeline-item inactive"
+                id="stepClosed">
+
+                Closed
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<script>
+
+
+/* =========================================
+   GENERATE WORK ORDER NUMBER
+========================================= */
+
+function generateWorkOrderNumber() {
+
+    let year =
+        new Date().getFullYear();
+
+    let workOrders =
+        JSON.parse(localStorage.getItem("workOrders")) || [];
+
+    let number =
+        workOrders.length + 1;
+
+    return "WO-" +
+        year +
+        "-" +
+        String(number).padStart(4, "0");
+
+}
+
+
+/* =========================================
+   RULE-BASED ASSESSMENT
+========================================= */
+
+function calculatePreliminaryAssessment() {
+
+    let condition =
+        parseInt(
+            document.getElementById("conditionLevel").value
+        );
+
+    let operationalEffect =
+        parseInt(
+            document.getElementById("operationalEffect").value
+        );
+
+    let safetyRisk =
+        parseInt(
+            document.getElementById("safetyRisk").value
+        );
+
+    let responseTime =
+        parseInt(
+            document.getElementById("responseTime").value
+        );
+
+
+    /*
+        SEVERITY
+
+        Severity is based on the highest
+        condition among:
+        - Current condition
+        - Operational effect
+        - Safety risk
+    */
+
+    let severityScore =
+        Math.max(
+            condition,
+            operationalEffect,
+            safetyRisk
+        );
+
+
+    /*
+        URGENCY
+
+        Urgency starts from the required
+        response time.
+
+        Safety concerns can increase urgency.
+    */
+
+    let urgencyScore =
+        responseTime;
+
+
+    if (safetyRisk >= 3) {
+
+        urgencyScore =
+            Math.max(
+                urgencyScore,
+                safetyRisk
+            );
+
+    }
+
+
+    /*
+        Immediate danger automatically
+        makes the request critical urgency.
+    */
+
+    if (safetyRisk === 4) {
+
+        urgencyScore = 4;
+
+    }
+
+
+    /*
+        CONVERT SCORE TO LEVEL
+    */
+
+    let levels = {
+
+        1: "Low",
+
+        2: "Moderate",
+
+        3: "High",
+
+        4: "Critical"
+
+    };
+
+
+    let severity =
+        levels[severityScore];
+
+    let urgency =
+        levels[urgencyScore];
+
+
+    /*
+        PRIORITY MATRIX
+    */
+
+    let priorityMatrix = {
+
+        "Low": {
+
+            "Low": "Low",
+
+            "Moderate": "Low",
+
+            "High": "Moderate",
+
+            "Critical": "High"
+
+        },
+
+        "Moderate": {
+
+            "Low": "Low",
+
+            "Moderate": "Moderate",
+
+            "High": "High",
+
+            "Critical": "High"
+
+        },
+
+        "High": {
+
+            "Low": "Moderate",
+
+            "Moderate": "High",
+
+            "High": "High",
+
+            "Critical": "Critical"
+
+        },
+
+        "Critical": {
+
+            "Low": "High",
+
+            "Moderate": "High",
+
+            "High": "Critical",
+
+            "Critical": "Critical"
+
+        }
+
+    };
+
+
+    let priority =
+        priorityMatrix[severity][urgency];
+
+
+    return {
+
+        severity:
+            severity,
+
+        urgency:
+            urgency,
+
+        priority:
+            priority
+
+    };
+
+}
+
+
+/* =========================================
+   SUBMIT REQUEST
+========================================= */
+
+document.getElementById("requestForm")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+
+        let workOrders =
+            JSON.parse(localStorage.getItem("workOrders")) || [];
+
+
+        let workOrderNo =
+            generateWorkOrderNumber();
+
+
+        /*
+            AUTOMATIC SYSTEM ASSESSMENT
+        */
+
+        let assessment =
+            calculatePreliminaryAssessment();
+
+
+        let workOrder = {
+
+            workOrderNo:
+                workOrderNo,
+
+            requesterName:
+                document.getElementById("requesterName").value,
+
+            requesterId:
+                document.getElementById("requesterId").value,
+
+            officeUnit:
+                document.getElementById("officeUnit").value,
+
+            contactNumber:
+                document.getElementById("contactNumber").value,
+
+            building:
+                document.getElementById("building").value,
+
+            location:
+                document.getElementById("location").value,
+
+            category:
+                document.getElementById("category").value,
+
+            requestedDate:
+                document.getElementById("requestedDate").value,
+
+            description:
+                document.getElementById("description").value,
+
+
+            /*
+                REQUESTER ASSESSMENT INPUTS
+            */
+
+            conditionLevel:
+                document.getElementById("conditionLevel").value,
+
+            operationalEffect:
+                document.getElementById("operationalEffect").value,
+
+            safetyRisk:
+                document.getElementById("safetyRisk").value,
+
+            responseTime:
+                document.getElementById("responseTime").value,
+
+
+            /*
+                SYSTEM-GENERATED ASSESSMENT
+            */
+
+            severity:
+                assessment.severity,
+
+            urgency:
+                assessment.urgency,
+
+            priority:
+                assessment.priority,
+
+
+            /*
+                WORK ORDER STATUS
+            */
+
+            status:
+                "Submitted",
+
+            assignedPersonnel:
+                "",
+
+            pfmoRemarks:
+                ""
+
+        };
+
+
+        workOrders.push(workOrder);
+
+
+        localStorage.setItem(
+            "workOrders",
+            JSON.stringify(workOrders)
+        );
+
+
+        /*
+            SUCCESS MESSAGE
+        */
+
+        document.getElementById("generatedWO")
+            .textContent = workOrderNo;
+
+        document.getElementById("successMessage")
+            .style.display = "block";
+
+
+        /*
+            AUTOMATICALLY PUT WO NUMBER
+            INTO TRACKING
+        */
+
+        document.getElementById("trackingNumber")
+            .value = workOrderNo;
+
+
+        /*
+            RESET FORM
+        */
+
+        document.getElementById("requestForm")
+            .reset();
+
+
+        /*
+            AUTOMATICALLY SHOW TRACKING
+        */
+
+        trackWorkOrder();
+
+    });
+
+
+/* =========================================
+   TRACK WORK ORDER
+========================================= */
+
+function trackWorkOrder() {
+
+    let trackingNumber =
+        document.getElementById("trackingNumber")
+        .value
+        .trim();
+
+
+    let workOrders =
+        JSON.parse(localStorage.getItem("workOrders")) || [];
+
+
+    let workOrder =
+        workOrders.find(function(order) {
+
+            return order.workOrderNo.toLowerCase()
+                === trackingNumber.toLowerCase();
+
+        });
+
+
+    let result =
+        document.getElementById("trackingResult");
+
+
+    let noResult =
+        document.getElementById("noResult");
+
+
+    if (!workOrder) {
+
+        result.style.display = "none";
+
+        noResult.style.display = "block";
+
+        return;
+
+    }
+
+
+    noResult.style.display = "none";
+
+    result.style.display = "block";
+
+
+    /* BASIC INFORMATION */
+
+    document.getElementById("trackWO")
+        .textContent =
+        workOrder.workOrderNo;
+
+
+    document.getElementById("trackRequester")
+        .textContent =
+        workOrder.requesterName;
+
+
+    document.getElementById("trackOffice")
+        .textContent =
+        workOrder.officeUnit;
+
+
+    document.getElementById("trackBuilding")
+        .textContent =
+        workOrder.building;
+
+
+    document.getElementById("trackLocation")
+        .textContent =
+        workOrder.location;
+
+
+    document.getElementById("trackCategory")
+        .textContent =
+        workOrder.category;
+
+
+    document.getElementById("trackDate")
+        .textContent =
+        workOrder.requestedDate;
+
+
+    /* STATUS */
+
+    document.getElementById("trackStatus")
+        .textContent =
+        workOrder.status;
+
+
+    /* SYSTEM PRELIMINARY ASSESSMENT */
+
+    document.getElementById("trackSeverity")
+        .textContent =
+        workOrder.severity ||
+        "Not Yet Assessed";
+
+
+    document.getElementById("trackUrgency")
+        .textContent =
+        workOrder.urgency ||
+        "Not Yet Assessed";
+
+
+    let priority =
+        workOrder.priority;
+
+
+    let priorityElement =
+        document.getElementById("trackPriority");
+
+
+    if (priority) {
+
+        priorityElement.textContent =
+            priority;
+
+
+        priorityElement.className =
+            "priority priority-" +
+            priority.toLowerCase();
+
+    } else {
+
+        priorityElement.textContent =
+            "Not Yet Assessed";
+
+
+        priorityElement.className =
+            "priority";
+
+    }
+
+
+    /* ASSIGNED PERSONNEL */
+
+    document.getElementById("trackPersonnel")
+        .textContent =
+        workOrder.assignedPersonnel ||
+        "Not Yet Assigned";
+
+
+    /* REMARKS */
+
+    document.getElementById("trackRemarks")
+        .textContent =
+        workOrder.pfmoRemarks ||
+        "No remarks yet.";
+
+
+    /* UPDATE TIMELINE */
+
+    updateTimeline(
+        workOrder.status
+    );
+
+}
+
+
+/* =========================================
+   UPDATE TIMELINE
+========================================= */
+
+function updateTimeline(status) {
+
+    let steps = {
+
+        "Submitted":
+            "stepSubmitted",
+
+        "For Inspection":
+            "stepInspection",
+
+        "Assigned":
+            "stepAssigned",
+
+        "In Progress":
+            "stepProgress",
+
+        "Completed":
+            "stepCompleted",
+
+        "Closed":
+            "stepClosed"
+
+    };
+
+
+    let order = [
+
+        "Submitted",
+
+        "For Inspection",
+
+        "Assigned",
+
+        "In Progress",
+
+        "Completed",
+
+        "Closed"
+
+    ];
+
+
+    let currentIndex =
+        order.indexOf(status);
+
+
+    order.forEach(function(step, index) {
+
+        let element =
+            document.getElementById(
+                steps[step]
+            );
+
+
+        if (index <= currentIndex) {
+
+            element.classList.remove(
+                "inactive"
+            );
+
+            element.classList.add(
+                "active"
+            );
+
+        } else {
+
+            element.classList.remove(
+                "active"
+            );
+
+            element.classList.add(
+                "inactive"
+            );
+
+        }
+
+    });
+
+}
+
+
+/* =========================================
+   AUTO TRACK WHEN ENTER IS PRESSED
+========================================= */
+
+document.getElementById("trackingNumber")
+    .addEventListener("keypress", function(event) {
+
+        if (event.key === "Enter") {
+
+            trackWorkOrder();
+
+        }
+
+    });
+
+
+</script>
+
+</body>
+</html>
